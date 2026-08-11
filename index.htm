@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Chat</title>
+</head>
+<body>
+    <h1>Voice Chat App</h1>
+    <button id="startAudio">Start Audio</button>
+    <audio id="localAudio" autoplay muted></audio>
+    <audio id="remoteAudio" autoplay></audio>
+
+    <script>
+        const startButton = document.getElementById('startAudio');
+        startButton.addEventListener('click', () => {
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                .then(stream => {
+                    const localAudio = document.getElementById('localAudio');
+                    localAudio.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing audio:', error);
+                });
+        });
+    </script>
+</body>
+</html>
