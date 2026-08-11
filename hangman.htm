@@ -1,0 +1,107 @@
+[12:29 pm, 11/08/2026] +91 7427 875 096: <!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Chat</title>
+</head>
+<body>
+    <h1>Voice Chat App</h1>
+    <button id="startAudio">Start Audio</button>
+    <audio id="localAudio" autoplay muted></audio>
+    <audio id="remoteAudio" autoplay></audio>
+
+    <script>
+        const startButton = document.getElementById('startAudio');
+        startButton.addEventListener('click', () => {
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+                .then(stream => {
+                    const localAudio = document.getElementById('localAudio');
+                    localAudio.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing audio:', error);
+                });
+        });
+    </script>
+</body>
+</html>
+[12:42 pm, 11/08/2026] +91 7427 875 096: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .word-display { font-size: 30px; letter-spacing: 15px; margin-bottom: 20px; font-weight: bold; }
+        .keyboard button { padding: 10px; font-size: 16px; margin: 5px; cursor: pointer; }
+        .message { font-size: 20px; margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Hangman Game</h1>
+    <div class="word-display" id="wordDisplay">_ _ _ _ _</div>
+    <div class="keyboard" id="keyboard"></div>
+    <div class="message" id="message"></div>
+
+    <script>
+        const words = ["JAVASCRIPT", "HTML", "CSS", "CODING", "GAME"];
+        let selectedWord = words[Math.floor(Math.random() * words.length)];
+        let guessedLetters = [];
+        let mistakes = 0;
+        const maxMistakes = 6;
+
+        function displayWord() {
+            let display = "";
+            for (let letter of selectedWord) {
+                if (guessedLetters.includes(letter)) {
+                    display += letter + " ";
+                } else {
+                    display += "_ ";
+                }
+            }
+            document.getElementById("wordDisplay").innerText = display.trim();
+            
+            if (!display.includes("_")) {
+                document.getElementById("message").innerText = "You Win!";
+                disableKeyboard();
+            }
+        }
+
+        function setupKeyboard() {
+            const keyboardDiv = document.getElementById("keyboard");
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            for (let letter of alphabet) {
+                const button = document.createElement("button");
+                button.innerText = letter;
+                button.id = "btn-" + letter;
+                button.onclick = () => guess(letter);
+                keyboardDiv.appendChild(button);
+            }
+        }
+
+        function guess(letter) {
+            guessedLetters.push(letter);
+            document.getElementById("btn-" + letter).disabled = true;
+            
+            if (!selectedWord.includes(letter)) {
+                mistakes++;
+                if (mistakes >= maxMistakes) {
+                    document.getElementById("message").innerText = "Game Over! The word was " + selectedWord;
+                    disableKeyboard();
+                }
+            }
+            displayWord();
+        }
+
+        function disableKeyboard() {
+            const buttons = document.getElementsByTagName("button");
+            for (let button of buttons) {
+                button.disabled = true;
+            }
+        }
+
+        setupKeyboard();
+        displayWord();
+    </script>
+</body>
+</html
